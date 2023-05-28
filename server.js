@@ -43,7 +43,7 @@ app.post('/api/notes', (req, res) => {
   fs.readFile(path.join(__dirname, 'db/db.json'), 'utf8', function (err, data) {
     if (err) {
       console.error(err);
-      return res.status(500).json({ error: 'Failed to read notes data.' });
+      return res.status(500).json({ error: 'Note Save Fail.' });
     }
 
     const notes = JSON.parse(data);
@@ -53,7 +53,7 @@ app.post('/api/notes', (req, res) => {
     fs.writeFile(path.join(__dirname, 'db/db.json'), JSON.stringify(notes), 'utf8', function (err) {
       if (err) {
         console.error(err);
-        return res.status(500).json({ error: 'Failed to save note.' });
+        return res.status(500).json({ error: 'Note Save Fail' });
       }
 
       res.json(newNote);
