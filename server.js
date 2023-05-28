@@ -17,7 +17,7 @@ app.use(routes);
 
 //GET notes that return the notes.html file
 app.get("/notes", (req, res) => {
-res.sendFile(path.join(_dirname, "/public/notes.html"))
+  res.sendFile(path.join(_dirname, "/public/notes.html"))
 });
 
 //GET notes that return the index.html file 
@@ -26,9 +26,9 @@ app.get('*', (req, res) => {
 });
 
 //GET notes that read the db.json file and return the saved notes as JSON
-app.get('/api/notes', (req,res) => 
+app.get('/api/notes', (req, res) =>
   fs.readFile("./db/db.json", "utf8", (err, data) => {
-    if( err ) return console.log(err);
+    if (err) return console.log(err);
     console.log(data)
     res.json(JSON.parse(data))
   })
@@ -36,7 +36,6 @@ app.get('/api/notes', (req,res) =>
 
 
 //POST notes that should recieve a new note and save to the db.json file with unique ID
-app.post(`/api/notes`)
 
 app.post('/api/notes', (req, res) => {
   const newNote = req.body;
@@ -48,7 +47,7 @@ app.post('/api/notes', (req, res) => {
     }
 
     const notes = JSON.parse(data);
-    newNote.id = generateUniqueId(); 
+    newNote.id = generateUniqueId();
     notes.push(newNote);
 
     fs.writeFile(path.join(__dirname, 'db/db.json'), JSON.stringify(notes), 'utf8', function (err) {
