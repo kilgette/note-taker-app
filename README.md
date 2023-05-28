@@ -5,7 +5,7 @@ Name: Amy Kilgour
 Please click [https://github.com/kilgette/note-taker-app](https://github.com/kilgette/note-taker-app) 
 to view the repository. Please click []() to view the deployed app.  
 
-Please click () to view a walk-through video
+Please click (https://drive.google.com/file/d/1Zz2kCOzOG3h3l03S98aJXsKsfb6dlrJ7/view) to view a walk-through video
 demonstrating the app's functionality. 
 
 Objective: Using an Express.js backend, enable a Note Taker App to save, retrieve and delete note data from a JSON file. 
