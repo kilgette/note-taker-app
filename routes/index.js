@@ -1,12 +1,9 @@
-//Gary's starter kit code 
+//Gary's starter kit code
 
-// const router = require("express").Router()
-// const otherRoutes = require("./otherRoutes");
-// const userRoutes = require("./userRoutes");
+const express = require("express");
+const noteRouter = require("./notes");
+const app = express();
 
+app.use("/notes", noteRouter);
 
-// router.use("/other", otherRoutes);
-// router.use("/user", userRoutes);
-
-
-// module.exports = router;
+module.exports = app;

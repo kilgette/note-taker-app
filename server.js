@@ -1,27 +1,31 @@
 const path = require('path');
 const express = require('express');
-const routes = require('./routes');
+const fs = require(`fs`);
+const { v4: uuidv4 } = require('uuid');
 
-const sequelize = require('./config/connection');
+// const routes = require('./routes');
 
+//declare express 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+
+//define middleware to handle data parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-app.use(routes);
+// app.use(routes);
 
 //ROUTES
 
 //GET notes that return the notes.html file
 app.get("/notes", (req, res) => {
-  res.sendFile(path.join(_dirname, "/public/notes.html"))
+  res.sendFile(path.join(__dirname, "/public/notes.html"))
 });
 
 //GET notes that return the index.html file 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
@@ -47,7 +51,7 @@ app.post('/api/notes', (req, res) => {
     }
 
     const notes = JSON.parse(data);
-    newNote.id = generateUniqueId();
+    newNote.id = uuidv4();
     notes.push(newNote);
 
     fs.writeFile(path.join(__dirname, 'db/db.json'), JSON.stringify(notes), 'utf8', function (err) {
@@ -61,9 +65,31 @@ app.post('/api/notes', (req, res) => {
   });
 });
 
-// // The line below prevents sequelize from syncing the database in a production environment.
-// // If you don't want it to sync locally either, change the true value to false at the end.
-// const forceValue = (process.env.NODE_ENV === "production") ? false : true
-// sequelize.sync({ force: forceValue }).then(() => {
-//   app.listen(PORT, () => console.log('Now listening'));
-// });
+app.delete('/api/notes/:id', (req, res) => {
+  const targetId = req.params.id;
+
+  fs.readFile(path.join(__dirname, 'db/db.json'), 'utf8', function (err, data) {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Note Save Fail.' });
+    }
+
+    const notes = JSON.parse(data);
+   const filteredNotes = notes.filter(note => note.id !== targetId)
+
+    fs.writeFile(path.join(__dirname, 'db/db.json'), JSON.stringify(filteredNotes), 'utf8', function (err) {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Note Save Fail' });
+      }
+
+      res.json("Success!");
+    });
+  });
+});
+
+
+
+app.listen(PORT, () => {
+  console.log(`server listening on port ${PORT}`)
+});

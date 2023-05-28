@@ -1,5 +1,10 @@
-// const router = require("express").Router();
-// const Other = require("../../models/Other");
+
+const express = require("express");
+const noteRouter = require("./notes");
+const app = express();
+
+
+//POST route for submitting new notes
 
 
 // router.get("/", (req, res) => {
